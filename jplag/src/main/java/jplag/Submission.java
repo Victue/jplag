@@ -131,7 +131,7 @@ public class Submission implements Comparable<Submission> {
         }
 
         String[] relativeFilePaths = getRelativeFilePaths(submissionFile, files);
-
+        // 生成token
         tokenList = this.program.getLanguage().parse(submissionFile, relativeFilePaths);
         if (!program.getLanguage().errors()) {
             if (tokenList.size() < 3) {

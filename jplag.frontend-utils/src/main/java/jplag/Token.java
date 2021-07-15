@@ -23,7 +23,7 @@ abstract public class Token implements TokenConstants, Serializable {
         setLength(length);
     }
 
-    // abstract members
+    // abstract members，XxxxToken.java中实现
     abstract public int getLine();
 
     abstract public int getColumn();

@@ -285,7 +285,7 @@ public class Report {
         htmlFile.println("</TABLE><P>\n");
         htmlFile.println("<!---->");
     }
-
+    // write matches CSV
     private void writeMatchesCSV(String fileName) {
         FileWriter writer = null;
         File csvFile = new File(reportDir, fileName);
@@ -342,7 +342,8 @@ public class Report {
         htmlFile.println(TagParser.parse(msg.getString("Report.Matches_for_X1_AND_X2"),
                 new String[] {comparison.firstSubmission.name, comparison.secondSubmission.name}));
         htmlFile.println("      </h3>");
-        htmlFile.println("      <h1 align=\"center\">");
+        htmlFile.println("      <h1 align=\"center\">"); 
+        // 相似度
         htmlFile.println("        " + comparison.roundedPercent() + "%");
         htmlFile.println("      </h1>");
         htmlFile.println("      <center>");
@@ -357,6 +358,7 @@ public class Report {
         htmlFile.println("    </div>");
 
         htmlFile.println("    <div>");
+        // html中对比表格
         reportComparison(htmlFile, comparison, i);
         htmlFile.println("    </div>");
 
@@ -365,7 +367,7 @@ public class Report {
         htmlFile.println("  <hr>");
 
         htmlFile.println("  <div style=\"display: flex;\">");
-
+        // 三种显示
         if (result.getOptions().getLanguage().usesIndex()) {
             writeIndexedSubmission(htmlFile, i, comparison, 0);
             writeIndexedSubmission(htmlFile, i, comparison, 1);
@@ -408,6 +410,7 @@ public class Report {
             String col = Color.getHexadecimalValue(i);
 
             htmlFile.print("<TR><TD BGCOLOR=\"" + col + "\"><FONT COLOR=\"" + col + "\">-</FONT>");
+            // 此处可能存在BUG，或者已过时，在html中无法跳转至指定位置
             htmlFile.print("<TD><A HREF=\"javascript:ZweiFrames('match" + index + "-0.html#" + i + "',2,'match" + index + "-1.html#" + i
                     + "',3)\" NAME=\"" + i + "\">");
             htmlFile.print(new String(startA.file.getBytes()));
@@ -456,9 +459,10 @@ public class Report {
         Match currentMatch;
         String hilf;
         int h;
+        // icon位置
         for (int x = 0; x < comparison.matches.size(); x++) {
             currentMatch = comparison.matches.get(x);
-
+            // 匹配代码段开始，结束
             Token start = tokens[(j == 0 ? currentMatch.startA : currentMatch.startB)];
             Token ende = tokens[((j == 0 ? currentMatch.startA : currentMatch.startB) + currentMatch.length - 1)];
 
@@ -519,8 +523,9 @@ public class Report {
         }
 
         f.println("<div style=\"flex-grow: 1;\">");
-
+        // 循环输出文件信息及代码
         for (int x = 0; x < text.length; x++) {
+            // 文件位置及文件名
             f.println("<h3>");
             f.println("<center>");
             f.println("<span>" + sub.name + "</span>");
@@ -529,6 +534,7 @@ public class Report {
             f.println("</center>");
             f.println("</h3>");
             f.println("<HR>");
+            // 代码片段
             if (result.getOptions().getLanguage().isPreformatted()) {
                 f.println("<PRE>");
             }
