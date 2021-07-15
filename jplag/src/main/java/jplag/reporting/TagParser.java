@@ -3,16 +3,23 @@ package jplag.reporting;
 public class TagParser {
 
     /**
-     * Replaces all "{<index>_description}" tags inside the message string with params[<index>-1].
+     * Replaces all "{<index>_description}" tags inside the message string with
+     * params[<index>-1].
      * <p>
-     * Example: parse("blb {1_n/a} d {3_desc} sf {2_bla} d", new String[] {"#", blabla(), null}); returns "blb # d null sf
-     * blab d", if blabla() returns "blab"
+     * Example: parse("blb {1_n/a} d {3_desc} sf {2_bla} d", new String[] {"#",
+     * blabla(), null}); returns "blb # d null sf blab d", if blabla() returns
+     * "blab"
+     * 
+     * 
+     * @param message - "Matches for {1_NAME} & {2_NAME}"
+     * @param parmas - two files, params[0]=xxx.java, params[1]=yyy.java
+     * @return "Matches for xxx.java & yyy.java"...
      */
     public static String parse(String message, String[] params) {
         String[] tokens = message.split("[{}]", -1);
         String result = tokens[0];
 
-        for (int i = 1; i < tokens.length; i += 2)    // Go to next tag position
+        for (int i = 1; i < tokens.length; i += 2) // Go to next tag position
         {
             try {
                 int ind = tokens[i].indexOf('_');
