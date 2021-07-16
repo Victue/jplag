@@ -35,6 +35,7 @@ public class JPlagComparison implements Comparator<JPlagComparison> {
 
     /*
      * s==0 uses the start indexes of subA as key for the sorting algorithm. Otherwise the start indexes of subB are used.
+     * 该方法仅在writeIndexedSubmission中使用，sort操作
      */
     public final int[] sort_permutation(int s) {   // bubblesort!!!
         int size = matches.size();
@@ -76,6 +77,7 @@ public class JPlagComparison implements Comparator<JPlagComparison> {
 
     /**
      * Get the total number of matched tokens for this comparison.
+     * 本次对比中tokens总数
      */
     public final int getNumberOfMatchedTokens() {
         int numberOfMatchedTokens = 0;
@@ -86,7 +88,7 @@ public class JPlagComparison implements Comparator<JPlagComparison> {
 
         return numberOfMatchedTokens;
     }
-
+    // 本次对比中最大的token数，用于颜色更改
     private int biggestMatch() {
         int erg = 0;
 
@@ -98,12 +100,14 @@ public class JPlagComparison implements Comparator<JPlagComparison> {
 
         return erg;
     }
-
+    // 88.135590 --> 88.100000
     public final float roundedPercent() {
         float percent = percent();
         return ((int) (percent * 10)) / (float) 10;
     }
 
+    // 以下代码计算相似度，avg, self, min, max
+    // 大量重复，建议改写为方法传参
     public final float percent() {
         float sa, sb;
         if (bcMatchesB != null && bcMatchesA != null) {
@@ -115,7 +119,7 @@ public class JPlagComparison implements Comparator<JPlagComparison> {
         }
         return (200 * (float) getNumberOfMatchedTokens()) / (sa + sb);
     }
-
+    // self
     public final float percentA() {
         int divisor;
         if (bcMatchesA != null) {
@@ -125,7 +129,7 @@ public class JPlagComparison implements Comparator<JPlagComparison> {
         }
         return (divisor == 0 ? 0f : (getNumberOfMatchedTokens() * 100 / (float) divisor));
     }
-
+    // self
     public final float percentB() {
         int divisor;
         if (bcMatchesB != null) {
@@ -135,7 +139,7 @@ public class JPlagComparison implements Comparator<JPlagComparison> {
         }
         return (divisor == 0 ? 0f : (getNumberOfMatchedTokens() * 100 / (float) divisor));
     }
-
+    // 相似度 Max
     public final float percentMaxAB() {
         float a = percentA();
         float b = percentB();
@@ -145,7 +149,7 @@ public class JPlagComparison implements Comparator<JPlagComparison> {
             return b;
         }
     }
-
+    // 相似度 Min
     public final float percentMinAB() {
         float a = percentA();
         float b = percentB();
@@ -155,7 +159,7 @@ public class JPlagComparison implements Comparator<JPlagComparison> {
             return b;
         }
     }
-
+    // basecode占比
     private final float percentBasecodeA() {
         float sa = firstSubmission.getNumberOfTokens() - firstSubmission.files.size();
         return bcMatchesA.getNumberOfMatchedTokens() * 100 / sa;
@@ -243,7 +247,8 @@ public class JPlagComparison implements Comparator<JPlagComparison> {
             return 1;
         }
     }
-
+    // 判断相似度是否相等
+    // 未引用
     @Override
     public boolean equals(Object obj) {
         if (!(obj instanceof JPlagComparison)) {
@@ -251,7 +256,7 @@ public class JPlagComparison implements Comparator<JPlagComparison> {
         }
         return (compare(this, (JPlagComparison) obj) == 0);
     }
-
+    // 未引用
     @Override
     public String toString() {
         return firstSubmission.name + " <-> " + secondSubmission.name;
