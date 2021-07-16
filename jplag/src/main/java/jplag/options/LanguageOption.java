@@ -34,14 +34,14 @@ public enum LanguageOption {
     public String getDisplayName() {
         return this.displayName;
     }
-
+    // 确认及过滤后缀
     public static LanguageOption fromDisplayName(String displayName) {
         return Arrays.stream(LanguageOption.values())
                 .filter(languageOption -> languageOption.displayName.equals(displayName))
                 .findFirst()
                 .orElse(getDefault());
     }
-
+    // get所有支持的语言
     public static String[] getAllDisplayNames() {
         return Arrays.stream(LanguageOption.values())
                 .map(languageOption -> languageOption.displayName)

@@ -27,6 +27,7 @@ import java.io.Reader;
  * use a given default encoding. System default is used if: BOM mark is not found and defaultEnc is NULL.<br />
  * Usage pattern:
  * 
+ * 读取BOM中编码信息，或使用默认编码
  * <pre>
  * String defaultEnc = "UTF-8"; // or NULL to use system default
  * FileInputStream fis = new FileInputStream(file);

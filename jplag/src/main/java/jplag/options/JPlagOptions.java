@@ -97,6 +97,7 @@ public class JPlagOptions {
 
     /**
      * Level of output verbosity.
+     * PARSER, QUITE, LONG, DETAILS
      */
     private Verbosity verbosity;
 

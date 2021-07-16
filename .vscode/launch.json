@@ -4,19 +4,12 @@
     // 欲了解更多信息，请访问: https://go.microsoft.com/fwlink/?linkid=830387
     "version": "0.2.0",
     "configurations": [
-        
-        {
-            "type": "java",
-            "name": "Launch with Arguments Prompt",
-            "request": "launch",
-            "mainClass": "",
-            "args": ["${command:SpecifyProgramArgs}", "-h"]
-        },
         {
             "type": "java",
             "name": "Launch Current File",
             "request": "launch",
-            "mainClass": "${file}"
+            "mainClass": "${file}",
+            "args": "-l python3 -v long -r E:/jplag_test/result/1 E:/jplag_test/data"
         },
         {
             "type": "java",
