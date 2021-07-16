@@ -11,6 +11,7 @@ public class JPlagResult {
 
     /**
      * List of detected comparisons whose similarity was about the specified threshold.
+     * 符合阈值条件的相似度列表
      */
     private List<JPlagComparison> comparisons;
 
@@ -37,6 +38,7 @@ public class JPlagResult {
      * Intervals:
      * <p>
      * 0: [0% - 10%), 1: [10% - 20%), 2: [20% - 30%), ..., 9: [90% - 100%]
+     * 相似度分布
      */
     private int[] similarityDistribution = null;
 
@@ -58,6 +60,7 @@ public class JPlagResult {
 
     /**
      * Note: Before, comparisons with a similarity below the given threshold were also included in the similarity matrix.
+     * 返回高于阈值的相似度分布列表
      */
     private int[] calculateSimilarityDistribution(List<JPlagComparison> comparisons) {
         int[] similarityDistribution = new int[10];
@@ -88,6 +91,7 @@ public class JPlagResult {
         return similarityDistribution;
     }
 
+    // 未找到对此方法的任何引用
     @Override
     public String toString() {
         return String.format("JPlagResult { comparisons: %d, duration: %d ms, language: %s, submissions: %d }", getComparisons().size(),
