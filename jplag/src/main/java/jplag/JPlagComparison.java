@@ -22,7 +22,7 @@ public class JPlagComparison implements Comparator<JPlagComparison> {
         this.firstSubmission = firstSubmission;
         this.secondSubmission = secondSubmission;
     }
-
+    // length为Token数量
     public final void addMatch(int startA, int startB, int length) {
         for (Match match : matches) {
             if (match.overlap(startA, startB, length)) {
@@ -31,6 +31,7 @@ public class JPlagComparison implements Comparator<JPlagComparison> {
         }
 
         matches.add(new Match(startA, startB, length));
+        System.out.println("已添加matches, startA,startB " + startA + "---" + startB);
     }
 
     /*

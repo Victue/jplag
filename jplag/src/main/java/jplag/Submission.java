@@ -47,7 +47,7 @@ public class Submission implements Comparable<Submission> {
 
     /**
      * True, if at least one error occurred while parsing this submission; false otherwise.
-     * True，如果解析此提交时至少发生了一个错误;否则错误。
+     * True，如果解析此提交时至少发生了一个错误;否则false。
      */
     public boolean hasErrors = false;
 

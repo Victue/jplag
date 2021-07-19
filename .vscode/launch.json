@@ -9,7 +9,7 @@
             "name": "Launch Current File",
             "request": "launch",
             "mainClass": "${file}",
-            "args": "-l java9 -v long -m 20 -r E:/jplag_test/result/1 E:/jplag_test/data"
+            "args": "-l java9  -v long -m 20 -r E:/jplag_test/result/1 E:/jplag_test/data -x E:/jplag_test/exclude/Dengyangyang_Hello.java"
         },
         {
             "type": "java",

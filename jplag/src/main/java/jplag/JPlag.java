@@ -38,12 +38,15 @@ public class JPlag implements ProgramI {
     private final JPlagOptions options;
 
     // ERROR REPORTING:
-    private String currentSubmissionName = "<Unknown submission>"; // TODO PB: This should be moved to parseSubmissions(...)
+    private String currentSubmissionName = "<Unknown submission>"; // TODO PB: This should be moved to
+                                                                   // parseSubmissions(...)
     private int errors = 0;
-    private Vector<String> errorVector = new Vector<>(); // Vector of errors that occurred during the execution of the program.
+    private Vector<String> errorVector = new Vector<>(); // Vector of errors that occurred during the execution of the
+                                                         // program.
 
     /**
      * Creates and initializes a JPlag instance, parameterized by a set of options.
+     * 
      * @param options determines the parameterization.
      * @throws ExitException if the initialization fails.
      */
@@ -56,7 +59,9 @@ public class JPlag implements ProgramI {
 
     /**
      * Main procedure, executes the comparison of source code submissions.
-     * @return the results of the comparison, specifically the submissions whose similarity exceeds a set threshold.
+     * 
+     * @return the results of the comparison, specifically the submissions whose
+     *         similarity exceeds a set threshold.
      * @throws ExitException if the JPlag exits preemptively.
      */
     public JPlagResult run() throws ExitException {
@@ -76,7 +81,8 @@ public class JPlag implements ProgramI {
         submissions = filterValidSubmissions(submissions);
         if (submissions.size() < 2) {
             printErrors();
-            throw new ExitException("Not enough valid submissions! (found " + submissions.size() + " valid submissions)",
+            throw new ExitException(
+                    "Not enough valid submissions! (found " + submissions.size() + " valid submissions)",
                     ExitException.NOT_ENOUGH_SUBMISSIONS_ERROR);
         }
 
@@ -104,18 +110,21 @@ public class JPlag implements ProgramI {
      * @return the program options which allow to configure JPlag.
      */
     protected JPlagOptions getOptions() {
-        return this.options; // TS: Should not be accessible, as options should be set before passing them to this class.
+        return this.options; // TS: Should not be accessible, as options should be set before passing them to
+                             // this class.
     }
 
     /**
      * Checks if a file has a valid suffix for the current language.
+     * 
      * @param file is the file to check.
      * @return true if the file suffix matches the language.
      */
     public boolean hasValidSuffix(File file) {
         String[] validSuffixes = options.getFileSuffixes();
 
-        // This is the case if either the language frontends or the CLI did not set the valid suffixes array in options
+        // This is the case if either the language frontends or the CLI did not set the
+        // valid suffixes array in options
         if (validSuffixes == null || validSuffixes.length == 0) {
             return true;
         }
@@ -170,22 +179,24 @@ public class JPlag implements ProgramI {
         String baseCodePath = this.options.getRootDirName() + File.separator + this.options.getBaseCodeSubmissionName();
 
         if (!(new File(this.options.getRootDirName())).exists()) {
-            throw new ExitException("Root directory \"" + this.options.getRootDirName() + "\" doesn't exist!", ExitException.BAD_PARAMETER);
+            throw new ExitException("Root directory \"" + this.options.getRootDirName() + "\" doesn't exist!",
+                    ExitException.BAD_PARAMETER);
         }
 
         File f = new File(baseCodePath);
 
         if (!f.exists()) {
             // Base code dir doesn't exist
-            throw new ExitException("Basecode directory \"" + baseCodePath + "\" doesn't exist!", ExitException.BAD_PARAMETER);
+            throw new ExitException("Basecode directory \"" + baseCodePath + "\" doesn't exist!",
+                    ExitException.BAD_PARAMETER);
         }
 
         if (this.options.getSubdirectoryName() != null && this.options.getSubdirectoryName().length() != 0) {
             f = new File(baseCodePath, this.options.getSubdirectoryName());
 
             if (!f.exists()) {
-                throw new ExitException("Basecode directory doesn't contain" + " the subdirectory \"" + this.options.getSubdirectoryName() + "\"!",
-                        ExitException.BAD_PARAMETER);
+                throw new ExitException("Basecode directory doesn't contain" + " the subdirectory \""
+                        + this.options.getSubdirectoryName() + "\"!", ExitException.BAD_PARAMETER);
             }
         }
 
@@ -193,7 +204,8 @@ public class JPlag implements ProgramI {
     }
 
     private Vector<Submission> filterValidSubmissions(Vector<Submission> submissions) {
-        return submissions.stream().filter(submission -> !submission.hasErrors).collect(Collectors.toCollection(Vector::new));
+        return submissions.stream().filter(submission -> !submission.hasErrors)
+                .collect(Collectors.toCollection(Vector::new));
     }
 
     /**
@@ -214,7 +226,8 @@ public class JPlag implements ProgramI {
         }
 
         if (fileNamesInRootDir == null) {
-            throw new ExitException("Cannot list files of the root directory! " + "Make sure the specified root directory is in fact a directory.");
+            throw new ExitException("Cannot list files of the root directory! "
+                    + "Make sure the specified root directory is in fact a directory.");
         }
 
         Arrays.sort(fileNamesInRootDir);
@@ -225,11 +238,11 @@ public class JPlag implements ProgramI {
     private void initializeComparisonStrategy() throws ExitException {
         ComparisonMode mode = options.getComparisonMode();
         switch (mode) { // TODO TS: Currently only one comparison strategy supported
-        case NORMAL:
-            this.comparisonStrategy = new NormalComparisonStrategy(options, gSTiling);
-            return;
-        default:
-            throw new ExitException("Illegal comparison mode: " + options.getComparisonMode());
+            case NORMAL:
+                this.comparisonStrategy = new NormalComparisonStrategy(options, gSTiling);
+                return;
+            default:
+                throw new ExitException("Illegal comparison mode: " + options.getComparisonMode());
         }
     }
 
@@ -238,14 +251,14 @@ public class JPlag implements ProgramI {
 
         try {
             Constructor<?> constructor = Class.forName(languageOption.getClassPath()).getConstructor(ProgramI.class);
-            Object[] constructorParams = {this};
+            Object[] constructorParams = { this };
 
             Language language = (Language) constructor.newInstance(constructorParams);
 
             this.language = language;
             this.options.setLanguage(language);
-        } catch (NoSuchMethodException | SecurityException | ClassNotFoundException | InstantiationException | IllegalAccessException
-                | IllegalArgumentException | InvocationTargetException e) {
+        } catch (NoSuchMethodException | SecurityException | ClassNotFoundException | InstantiationException
+                | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
             e.printStackTrace();
 
             throw new ExitException("Language instantiation failed", ExitException.BAD_LANGUAGE_ERROR);
@@ -256,38 +269,45 @@ public class JPlag implements ProgramI {
         System.out.println("Initialized language " + this.getLanguage().name());
     }
 
-    private Vector<Submission> mapFileNamesInRootDirToSubmissions(String[] fileNames, File rootDir) throws ExitException {
+    /*
+     * 对提交的文件进行验证，文件是否被排除，后缀是否被忽略，子目录是否有效，是否为基础代码.
+     * 
+     * @return 提交的所有的有效文件
+     */
+    private Vector<Submission> mapFileNamesInRootDirToSubmissions(String[] fileNames, File rootDir)
+            throws ExitException {
         Vector<Submission> submissions = new Vector<>();
 
         for (String fileName : fileNames) {
             File submissionFile = new File(rootDir, fileName);
-
+            // excluede submission files
             if (isFileExcluded(submissionFile)) {
                 System.out.println("Exclude submission: " + submissionFile.getName());
                 continue;
             }
-
+            // ignore submission suffix
             if (submissionFile.isFile() && !hasValidSuffix(submissionFile)) {
                 System.out.println("Ignore submission with invalid suffix: " + submissionFile.getName());
                 continue;
             }
-
+            // 子目录是否有效
             if (submissionFile.isDirectory() && options.getSubdirectoryName() != null) {
                 // Use subdirectory instead
                 submissionFile = new File(submissionFile, options.getSubdirectoryName());
 
                 if (!submissionFile.exists()) {
-                    throw new ExitException(
-                            String.format("Submission %s does not contain the given subdirectory '%s'", fileName, options.getSubdirectoryName()));
+                    throw new ExitException(String.format("Submission %s does not contain the given subdirectory '%s'",
+                            fileName, options.getSubdirectoryName()));
                 }
 
                 if (!submissionFile.isDirectory()) {
-                    throw new ExitException(String.format("The given subdirectory '%s' is not a directory!", options.getSubdirectoryName()));
+                    throw new ExitException(String.format("The given subdirectory '%s' is not a directory!",
+                            options.getSubdirectoryName()));
                 }
             }
 
             Submission submission = new Submission(fileName, submissionFile, this);
-
+            // 是否为基础代码文件
             if (options.hasBaseCode() && options.getBaseCodeSubmissionName().equals(fileName)) {
                 baseCodeSubmission = submission;
             } else {
@@ -299,9 +319,11 @@ public class JPlag implements ProgramI {
     }
 
     /**
-     * TODO PB: Find a better way to separate parseSubmissions(...) and parseBaseCodeSubmission(...)
+     * TODO PB: Find a better way to separate parseSubmissions(...) and
+     * parseBaseCodeSubmission(...)
      */
-    private void parseAllSubmissions(Vector<Submission> submissions, Submission baseCodeSubmission) throws ExitException {
+    private void parseAllSubmissions(Vector<Submission> submissions, Submission baseCodeSubmission)
+            throws ExitException {
         try {
             parseSubmissions(submissions);
             System.gc();
@@ -313,7 +335,8 @@ public class JPlag implements ProgramI {
         } catch (Throwable e) {
             e.printStackTrace();
 
-            throw new ExitException("Unknown exception during parsing of " + "submission \"" + currentSubmissionName + "\"");
+            throw new ExitException(
+                    "Unknown exception during parsing of " + "submission \"" + currentSubmissionName + "\"");
         }
     }
 
@@ -338,7 +361,8 @@ public class JPlag implements ProgramI {
         }
 
         if (subm.tokenList != null && subm.getNumberOfTokens() < options.getMinTokenMatch()) {
-            throw new ExitException("Basecode submission contains fewer tokens " + "than minimum match length allows!\n");
+            throw new ExitException(
+                    "Basecode submission contains fewer tokens " + "than minimum match length allows!\n");
         }
 
         if (options.hasBaseCode()) {
@@ -375,13 +399,13 @@ public class JPlag implements ProgramI {
 
             print(null, "------ Parsing submission: " + subm.name + "\n");
             currentSubmissionName = subm.name;
-
+            // 对提交的代码进行parse
             if (!(ok = subm.parse())) {
                 errors++;
             }
-
+            // parse总数(包括错误的)
             count++;
-
+            // Token数少于指定最小Token数
             if (subm.tokenList != null && subm.getNumberOfTokens() < options.getMinTokenMatch()) {
                 print(null, "Submission contains fewer tokens than minimum match " + "length allows!\n");
                 subm.tokenList = null;
@@ -396,12 +420,13 @@ public class JPlag implements ProgramI {
             }
         }
 
-        print("\n" + (count - errors - invalid) + " submissions parsed successfully!\n" + errors + " parser error" + (errors != 1 ? "s!\n" : "!\n"),
-                null);
-
+        print("\n" + (count - errors - invalid) + " submissions parsed successfully!\n" + errors + " parser error"
+                + (errors != 1 ? "s!\n" : "!\n"), null);
+                
         if (invalid != 0) {
             print(null,
-                    invalid + ((invalid == 1) ? " submission is not valid because it contains" : " submissions are not valid because they contain")
+                    invalid + ((invalid == 1) ? " submission is not valid because it contains"
+                            : " submissions are not valid because they contain")
                             + " fewer tokens\nthan minimum match length allows.\n");
         }
 
@@ -428,7 +453,8 @@ public class JPlag implements ProgramI {
     }
 
     /*
-     * If an exclusion file is given, it is read in and all stings are saved in the set "excluded".
+     * If an exclusion file is given, it is read in and all stings are saved in the
+     * set "excluded".
      */
     private void readExclusionFile() {
         if (options.getExclusionFileName() == null) {
