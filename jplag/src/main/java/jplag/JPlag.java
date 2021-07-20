@@ -140,7 +140,7 @@ public class JPlag implements ProgramI {
         }
         return excludedFileNames.stream().anyMatch(excludedName -> file.getName().endsWith(excludedName));
     }
-
+    // 输出内容
     @Override
     public void print(String message, String longMessage) {
         if (options.getVerbosity() == PARSER) {

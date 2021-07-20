@@ -388,6 +388,7 @@ public class Report {
 
     /**
      * This method generates an table entry in the list of all comparisons.
+     * 相似表格
      */
     private void reportComparison(HTMLFile htmlFile, JPlagComparison comparison, int index) {
         Match match;
@@ -401,8 +402,9 @@ public class Report {
 
         for (int i = 0; i < comparison.matches.size(); i++) {
             match = comparison.matches.get(i);
-
+            // 相似起始行
             Token startA = tokensA[match.startA];
+            // 相似结束行
             Token endA = tokensA[match.startA + match.length - 1];
             Token startB = tokensB[match.startB];
             Token endB = tokensB[match.startB + match.length - 1];
@@ -635,6 +637,14 @@ public class Report {
         Submission sub = (j == 0 ? comparison.firstSubmission : comparison.secondSubmission);
         String[] files = comparison.files(j);
         String[][] text = sub.readFiles(files);
+        // 测试输出, 后续删除
+        // if (j==0) {
+        //     System.out.println("当前文件名为:" + sub.name + "--------代码为：");
+        //     for (int length=0; length < text[0].length; length++) {
+        //         System.out.println(text[0][length]);
+        //     }
+        // }
+
         Token[] tokens = (j == 0 ? comparison.firstSubmission : comparison.secondSubmission).tokenList.tokens;
 
         // Markup list:
@@ -649,12 +659,22 @@ public class Report {
             return (mo1.frontMarkup ? -1 : 1);
         };
         TreeMap<MarkupText, Object> markupList = new TreeMap<>(comp);
-
+        // comparison包含两个文件的信息
+        // mathces : length, startA, startB
         for (int x = 0; x < comparison.matches.size(); x++) {
             Match onematch = comparison.matches.get(x);
-
+            
             Token start = tokens[(j == 0 ? onematch.startA : onematch.startB)];
             Token end = tokens[((j == 0 ? onematch.startA : onematch.startB) + onematch.length - 1)];
+            // 测试，后续删除
+            System.out.println(j==0 ? ("当前文件名为:" + sub.name + "--------相似代码startA：" + start.getLine() + "----endA:" + end.getLine() + "----相似行数:" + (end.getLine() - start.getLine())) : ("当前文件名为:" + sub.name + "--------相似代码startB：" + start.getLine()  + "----endB:" + end.getLine() + "----相似行数:" + (end.getLine() - start.getLine())));
+            // 输出相似代码片段，先输出A，再输出B。测试使用，后续删除
+            // if (true) {
+            //     System.out.println("当前文件名为:" + sub.name + "--------相似代码为：");
+            //     for (int s_l = start.getLine() - 1; s_l< end.getLine(); s_l++) {
+            //         System.out.println(text[0][s_l]);
+            //     }
+            // }    
             for (int fileIndex = 0; fileIndex < files.length; fileIndex++) {
                 if (start.file.equals(files[fileIndex]) && text[fileIndex] != null) {
                     String tmp = "<FONT color=\"" + Color.getHexadecimalValue(x) + "\">" + (j == 1 ? "<div style=\"position:absolute;left:0\">" : "")
