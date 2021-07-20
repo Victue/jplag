@@ -140,6 +140,7 @@ public class JPlag implements ProgramI {
         }
         return excludedFileNames.stream().anyMatch(excludedName -> file.getName().endsWith(excludedName));
     }
+
     // 输出内容
     @Override
     public void print(String message, String longMessage) {
@@ -422,7 +423,7 @@ public class JPlag implements ProgramI {
 
         print("\n" + (count - errors - invalid) + " submissions parsed successfully!\n" + errors + " parser error"
                 + (errors != 1 ? "s!\n" : "!\n"), null);
-                
+
         if (invalid != 0) {
             print(null,
                     invalid + ((invalid == 1) ? " submission is not valid because it contains"

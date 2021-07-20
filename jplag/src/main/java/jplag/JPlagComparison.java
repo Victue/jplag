@@ -6,7 +6,8 @@ import java.util.Comparator;
 import java.util.List;
 
 /**
- * This method represents the whole result of a comparison between two submissions.
+ * This method represents the whole result of a comparison between two
+ * submissions.
  */
 public class JPlagComparison implements Comparator<JPlagComparison> {
 
@@ -22,6 +23,7 @@ public class JPlagComparison implements Comparator<JPlagComparison> {
         this.firstSubmission = firstSubmission;
         this.secondSubmission = secondSubmission;
     }
+
     // length为Token数量
     public final void addMatch(int startA, int startB, int length) {
         for (Match match : matches) {
@@ -35,10 +37,11 @@ public class JPlagComparison implements Comparator<JPlagComparison> {
     }
 
     /*
-     * s==0 uses the start indexes of subA as key for the sorting algorithm. Otherwise the start indexes of subB are used.
+     * s==0 uses the start indexes of subA as key for the sorting algorithm.
+     * Otherwise the start indexes of subB are used.
      * 该方法仅在writeIndexedSubmission中使用，sort操作
      */
-    public final int[] sort_permutation(int s) {   // bubblesort!!!
+    public final int[] sort_permutation(int s) { // bubblesort!!!
         int size = matches.size();
         int[] perm = new int[size];
         int i, j, tmp;
@@ -48,7 +51,7 @@ public class JPlagComparison implements Comparator<JPlagComparison> {
             perm[i] = i;
         }
 
-        if (s == 0) {     // submission A
+        if (s == 0) { // submission A
             for (i = 1; i < size; i++) {
                 for (j = 0; j < (size - i); j++) {
                     if (matches.get(perm[j]).startA > matches.get(perm[j + 1]).startA) {
@@ -58,7 +61,7 @@ public class JPlagComparison implements Comparator<JPlagComparison> {
                     }
                 }
             }
-        } else {        // submission B
+        } else { // submission B
             for (i = 1; i < size; i++) {
                 for (j = 0; j < (size - i); j++) {
                     if (matches.get(perm[j]).startB > matches.get(perm[j + 1]).startB) {
@@ -77,8 +80,7 @@ public class JPlagComparison implements Comparator<JPlagComparison> {
      */
 
     /**
-     * Get the total number of matched tokens for this comparison.
-     * 本次对比中tokens总数
+     * Get the total number of matched tokens for this comparison. 本次对比中tokens总数
      */
     public final int getNumberOfMatchedTokens() {
         int numberOfMatchedTokens = 0;
@@ -89,6 +91,7 @@ public class JPlagComparison implements Comparator<JPlagComparison> {
 
         return numberOfMatchedTokens;
     }
+
     // 本次对比中最大的token数，用于颜色更改
     private int biggestMatch() {
         int erg = 0;
@@ -101,6 +104,7 @@ public class JPlagComparison implements Comparator<JPlagComparison> {
 
         return erg;
     }
+
     // 88.135590 --> 88.100000
     public final float roundedPercent() {
         float percent = percent();
@@ -112,34 +116,41 @@ public class JPlagComparison implements Comparator<JPlagComparison> {
     public final float percent() {
         float sa, sb;
         if (bcMatchesB != null && bcMatchesA != null) {
-            sa = firstSubmission.getNumberOfTokens() - firstSubmission.files.size() - bcMatchesA.getNumberOfMatchedTokens();
-            sb = secondSubmission.getNumberOfTokens() - secondSubmission.files.size() - bcMatchesB.getNumberOfMatchedTokens();
+            sa = firstSubmission.getNumberOfTokens() - firstSubmission.files.size()
+                    - bcMatchesA.getNumberOfMatchedTokens();
+            sb = secondSubmission.getNumberOfTokens() - secondSubmission.files.size()
+                    - bcMatchesB.getNumberOfMatchedTokens();
         } else {
             sa = firstSubmission.getNumberOfTokens() - firstSubmission.files.size();
             sb = secondSubmission.getNumberOfTokens() - secondSubmission.files.size();
         }
         return (200 * (float) getNumberOfMatchedTokens()) / (sa + sb);
     }
+
     // self
     public final float percentA() {
         int divisor;
         if (bcMatchesA != null) {
-            divisor = firstSubmission.getNumberOfTokens() - firstSubmission.files.size() - bcMatchesA.getNumberOfMatchedTokens();
+            divisor = firstSubmission.getNumberOfTokens() - firstSubmission.files.size()
+                    - bcMatchesA.getNumberOfMatchedTokens();
         } else {
             divisor = firstSubmission.getNumberOfTokens() - firstSubmission.files.size();
         }
         return (divisor == 0 ? 0f : (getNumberOfMatchedTokens() * 100 / (float) divisor));
     }
+
     // self
     public final float percentB() {
         int divisor;
         if (bcMatchesB != null) {
-            divisor = secondSubmission.getNumberOfTokens() - secondSubmission.files.size() - bcMatchesB.getNumberOfMatchedTokens();
+            divisor = secondSubmission.getNumberOfTokens() - secondSubmission.files.size()
+                    - bcMatchesB.getNumberOfMatchedTokens();
         } else {
             divisor = secondSubmission.getNumberOfTokens() - secondSubmission.files.size();
         }
         return (divisor == 0 ? 0f : (getNumberOfMatchedTokens() * 100 / (float) divisor));
     }
+
     // 相似度 Max
     public final float percentMaxAB() {
         float a = percentA();
@@ -150,6 +161,7 @@ public class JPlagComparison implements Comparator<JPlagComparison> {
             return b;
         }
     }
+
     // 相似度 Min
     public final float percentMinAB() {
         float a = percentA();
@@ -160,6 +172,7 @@ public class JPlagComparison implements Comparator<JPlagComparison> {
             return b;
         }
     }
+
     // basecode占比
     private final float percentBasecodeA() {
         float sa = firstSubmission.getNumberOfTokens() - firstSubmission.files.size();
@@ -182,7 +195,8 @@ public class JPlagComparison implements Comparator<JPlagComparison> {
     }
 
     /**
-     * This method returns all the files which contributed to a match. Parameter: j == 0 submission A, j != 0 submission B.
+     * This method returns all the files which contributed to a match. Parameter: j
+     * == 0 submission A, j != 0 submission B.
      */
     public final String[] files(int j) {
         if (matches.size() == 0) {
@@ -219,7 +233,8 @@ public class JPlagComparison implements Comparator<JPlagComparison> {
         }
 
         /*
-         * sort by file name. (so that equally named files are displayed approximately side by side.)
+         * sort by file name. (so that equally named files are displayed approximately
+         * side by side.)
          */
         Arrays.sort(res);
 
@@ -227,7 +242,8 @@ public class JPlagComparison implements Comparator<JPlagComparison> {
     }
 
     /**
-     * The bigger a match (length) is relatively to the biggest match the redder is the color returned by this method.
+     * The bigger a match (length) is relatively to the biggest match the redder is
+     * the color returned by this method.
      */
     public String color(int length) {
         int color = 255 * length / biggestMatch();
@@ -248,6 +264,7 @@ public class JPlagComparison implements Comparator<JPlagComparison> {
             return 1;
         }
     }
+
     // 判断相似度是否相等
     // 未引用
     @Override
@@ -257,6 +274,7 @@ public class JPlagComparison implements Comparator<JPlagComparison> {
         }
         return (compare(this, (JPlagComparison) obj) == 0);
     }
+
     // 未引用
     @Override
     public String toString() {

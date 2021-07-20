@@ -7,7 +7,7 @@ public class Match {
     public int length;
 
     public Match() {
-        // non-parameterized constructor for uninitialized matches 
+        // non-parameterized constructor for uninitialized matches
     }
 
     public Match(int startA, int startB, int length) {
