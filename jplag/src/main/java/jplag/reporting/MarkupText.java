@@ -3,6 +3,7 @@ package jplag.reporting;
 /**
  * This class represents one markup tag that will be included in the text. It is necessary to sort the objects before
  * they are included into the text, so that the original position can be found.
+ * 标记信息，line, column text为字体颜色、标记src、跳转信息
  */
 public class MarkupText {
     public int fileIndex, lineIndex, column;

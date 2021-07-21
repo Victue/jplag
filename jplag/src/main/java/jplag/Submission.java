@@ -218,6 +218,7 @@ public class Submission implements Comparable<Submission> {
     /**
      * Used by the "Report" class. All source files are returned as an array of an array of chars.
      * 由“Report”类使用。所有源文件都以字符数组的数组的形式返回。
+     * 仅在writeIndexedSubmission中使用，usesIndex=true，即to be used with the Character front end
      */
     public char[][] readFilesChar(String[] files) throws jplag.ExitException {
         char[][] result = new char[files.length][];

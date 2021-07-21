@@ -377,7 +377,7 @@ public class Report {
         htmlFile.println("  <hr>");
 
         htmlFile.println("  <div style=\"display: flex;\">");
-        // 三种显示
+        // 1, 是否使用usesIndex  2, 是否支持supportsColumns() 3, 前两者且不支持
         if (result.getOptions().getLanguage().usesIndex()) {
             writeIndexedSubmission(htmlFile, i, comparison, 0);
             writeIndexedSubmission(htmlFile, i, comparison, 1);
@@ -397,7 +397,9 @@ public class Report {
     }
 
     /**
-     * This method generates an table entry in the list of all comparisons. 相似表格
+     * This method generates an table entry in the list of all comparisons.
+     * 
+     * 相似表格
      */
     private void reportComparison(HTMLFile htmlFile, JPlagComparison comparison, int index) {
         Match match;
@@ -575,6 +577,7 @@ public class Report {
      * i is the number of the match j == 0 if subA is considered, otherwise it is
      * subB This procedure uses only the getIndex() method of the token. It is meant
      * to be used with the Character front end
+     * usesIndex=true
      */
     private void writeIndexedSubmission(HTMLFile f, int i, JPlagComparison comparison, int j) throws ExitException {
         Submission sub = (j == 0 ? comparison.firstSubmission : comparison.secondSubmission);
@@ -708,6 +711,7 @@ public class Report {
                     // position the icon and the beginning of the colorblock
                     markupList.put(new MarkupText(fileIndex, start.getLine() - 1, start.getColumn() - 1, tmp, true),
                             null);
+                    //System.out.println(new MarkupText(fileIndex, start.getLine() - 1, start.getColumn() - 1, tmp, true).toString());
                     // mark the end
                     markupList.put(new MarkupText(fileIndex, end.getLine() - 1, end.getColumn() + end.getLength() - 1,
                             "</B></FONT>", false), null);

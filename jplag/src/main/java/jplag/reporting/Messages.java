@@ -3,7 +3,9 @@ package jplag.reporting;
 import java.util.Locale;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
-
+/**
+ * html中的文字
+ */
 public class Messages {
 
     private final ResourceBundle resourceBundle;
@@ -16,6 +18,11 @@ public class Messages {
         resourceBundle = ResourceBundle.getBundle(bundleName, new Locale(countryTag));
     }
 
+    /*
+     * @param key ：Report.Language
+     * 
+     * @return Language
+     */
     public String getString(String key) {
         try {
             return resourceBundle.getString(key);

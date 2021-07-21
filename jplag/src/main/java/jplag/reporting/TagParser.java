@@ -37,7 +37,6 @@ public class TagParser {
                 result += tokens[i + 1];
             }
         }
-
         return result;
     }
 }
